@@ -23,6 +23,9 @@
             <div class="form-group">
               <label for="inputUserName">Add Source</label>
               <input type="text" name="name" placeholder="Enter Data Source" class="form-control">
+              <br>
+              <label for="inputUserName">Add description</label>
+              <input type="text" name="descr" placeholder="Enter Data description" class="form-control">
             </div>
 
             <div class="row">
@@ -57,6 +60,7 @@
                         <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
                           aria-sort="ascending" aria-label="Name: activate to sort column descending">Name
                         </th>
+                        <th>description</th>
                         <th>Edit</th>
                         <th>Delete</th>
                       </tr>
@@ -66,6 +70,7 @@
                         <tr role="row" class="odd">
                           <td>{{ data.id }}</td>
                           <td>{{ data.name }}</td>
+                          <td>{{ data.descr	}}</td>
                           <td>
                           <a href="{% url 'editDataSource' id=data.id %}"
                               ><span class="bg-primary p-1" style="color: white"

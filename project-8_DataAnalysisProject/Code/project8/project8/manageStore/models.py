@@ -6,6 +6,7 @@ from django.utils import timezone
 
 class Data_source(models.Model):
     name = models.CharField(max_length=30)
+    descr = models.CharField(max_length=30)
 
     class Meta:
         db_table = "managestore_data_source"
@@ -48,3 +49,4 @@ class Data(models.Model):
 
     class Meta:
         db_table = "managestore_data"
+

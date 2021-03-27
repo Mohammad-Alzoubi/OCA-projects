@@ -27,15 +27,15 @@ from .resources import *
 
 
 
-@login_required(login_url='http://127.0.0.1:8000/login')
+# @login_required(login_url='http://127.0.0.1:8000/login')
 def add_data_source(request):
     return render(request, 'app/add_data_source.html')
 
-@login_required(login_url='http://127.0.0.1:8000/login')
+# @login_required(login_url='http://127.0.0.1:8000/login')
 def registerPage(request):
     return render(request, 'app/test.html')
 
-@login_required(login_url='http://127.0.0.1:8000/login')
+# @login_required(login_url='http://127.0.0.1:8000/login')
 def manage_store(request):
     return render(request, 'app/manage_store.html')
 
@@ -80,14 +80,14 @@ def destroy_user(request, id):
     users.delete()  
     return HttpResponseRedirect("/add_user") 
 
-#Edit&Update-User
+#Edit
 def edit_user(request, id):
     if not request.user.is_authenticated:
             return redirect('login')  
     users = User.objects.get(id=id)  
     return render(request,'app/edit_user.html', {'users':users}) 
 
-
+#Update-User
 def update_user(request, id):
     if not request.user.is_authenticated:
             return redirect('login')   
@@ -100,52 +100,55 @@ def update_user(request, id):
 def logoutUser(request):
     logout(request)
     return redirect('login')
-
 #--------------------------------------------------------
 # ==============>end Section add user<===================
 #--------------------------------------------------------
+
+
+
 
 #--------------------------------------------------------
 # =============start section data resource<==============
 #--------------------------------------------------------
 def add_data_source(request):
-    if not request.user.is_authenticated:
-            return redirect('login') 
+    # if not request.user.is_authenticated:
+    #         return redirect('login') 
     data_source = Data_source.objects.all()
     context={'data_source': data_source,'manageStore': Manage_store.objects.all(), 'manageStoreId': Manage_store.objects.all()}
     return render(request, 'app/add_data_source.html',context )
 
 # AddData
 def addDataSource(request):
-    if not request.user.is_authenticated:
-            return redirect('login') 
+    # if not request.user.is_authenticated:
+    #         return redirect('login') 
     if request.method == 'POST':
-      if request.POST['name']:
-        dataSource = Data_source(name=request.POST['name'])
+      if request.POST['name'] and request.POST["descr"]:
+        dataSource = Data_source(name=request.POST['name'],descr=request.POST['descr'])
         dataSource.save()
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 # editDataSource 
 def editDataSource(request, id):
-    if not request.user.is_authenticated:
-        return redirect('login') 
+    # if not request.user.is_authenticated:
+    #     return redirect('login') 
     if id:
         dataSource = Data_source.objects.get(id=id)
         return render(request, "app/edit_data_source.html", context={'dataSource': dataSource})
 
 # updateDataSource
 def updateDataSource(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
+    # if not request.user.is_authenticated:
+    #     return redirect('login')
     if request.method == 'POST':
-        if request.POST['name']:
-            Data_source.objects.filter(id=request.POST['id']).update(name=request.POST['name'])
+        if request.POST['name'] and request.POST['descr']:
+            Data_source.objects.filter(id=request.POST['id']).update(name=request.POST['name'],
+                                                                    descr=request.POST['descr'])
             return redirect("/")
 
 # deleteData
 def deleteData(request, id):
-    if not request.user.is_authenticated:
-        return redirect('login')
+    # if not request.user.is_authenticated:
+    #     return redirect('login')
     Data_source.objects.filter(id=id).delete()
     return redirect("/")
 
@@ -163,7 +166,7 @@ def deleteData(request, id):
 
 def index():
     return redirect('/manage_store/')
-         # -------- Start Upload Excel Sheet ----- #
+# -------- Start Upload Excel Sheet ----- #
 
 def manage_store(request):
     if not request.user.is_authenticated:
@@ -210,6 +213,9 @@ def manage_store(request):
 
     return render(request, 'app/manage_store.html', {'Data': data, 'read_data_source': read_data_source,'manageStore': Manage_store.objects.all(), 'manageStoreId': Manage_store.objects.all()})
 # ------------------ End View Pages ------------------ #
+
+
+
 # ------------- Start Upload Excel Sheet ------------------ #
 def upload(request , id=None):
     data_source_name = ''
